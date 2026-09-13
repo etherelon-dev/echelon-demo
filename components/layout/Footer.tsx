@@ -64,7 +64,7 @@ function ComingSoonLink({ label }: { label: string }) {
           showNotice ? "opacity-100" : "opacity-0"
         }`}
       >
-        Coming soon — akan hadir dalam beberapa waktu
+        Coming soon
       </span>
     </button>
   );

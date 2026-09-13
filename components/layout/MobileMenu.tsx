@@ -3,7 +3,6 @@
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import type { NavLink } from "@/types/content";
-import Button from "@/components/ui/Button";
 
 type MobileMenuProps = {
   links: NavLink[];
@@ -35,14 +34,6 @@ export default function MobileMenu({ links, onClose }: MobileMenuProps) {
           </a>
         ))}
       </nav>
-      <div className="mt-auto flex flex-col gap-4 pt-10">
-        <Button variant="secondary" comingSoon className="w-full">
-          Try Demo
-        </Button>
-        <Button variant="primary" className="w-full">
-          Join Waitlist
-        </Button>
-      </div>
     </div>,
     document.body
   );

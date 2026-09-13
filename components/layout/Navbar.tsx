@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { navLinks } from "@/lib/content/nav";
 import LogoMark from "@/components/ui/LogoMark";
-import Button from "@/components/ui/Button";
 import MobileMenu from "@/components/layout/MobileMenu";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -53,19 +54,14 @@ export default function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-bone-dim transition-colors duration-200 hover:text-gold-300"
+              className={`text-sm transition-colors duration-200 hover:text-gold-300 ${
+                pathname === link.href ? "text-gold-300" : "text-bone-dim"
+              }`}
             >
               {link.label}
             </a>
           ))}
         </nav>
-
-        <div className="hidden items-center gap-3 md:flex">
-          <Button variant="secondary" comingSoon>
-            Try Demo
-          </Button>
-          <Button variant="primary">Join Waitlist</Button>
-        </div>
 
         <button
           type="button"
