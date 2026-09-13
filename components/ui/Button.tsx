@@ -10,6 +10,7 @@ type ButtonProps = {
   variant?: ButtonVariant;
   href?: string;
   comingSoon?: boolean;
+  external?: boolean;
   className?: string;
 };
 
@@ -27,6 +28,7 @@ export default function Button({
   variant = "primary",
   href,
   comingSoon = false,
+  external = false,
   className = ""
 }: ButtonProps) {
   const [showNotice, setShowNotice] = useState(false);
@@ -65,7 +67,12 @@ export default function Button({
 
   if (href) {
     return (
-      <a href={href} className={combinedClasses}>
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        className={combinedClasses}
+      >
         {children}
       </a>
     );

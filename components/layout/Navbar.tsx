@@ -6,6 +6,7 @@ import { Menu } from "lucide-react";
 import { navLinks } from "@/lib/content/nav";
 import LogoMark from "@/components/ui/LogoMark";
 import MobileMenu from "@/components/layout/MobileMenu";
+import Button from "@/components/ui/Button";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -62,6 +63,13 @@ export default function Navbar() {
             </a>
           ))}
         </nav>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <Button variant="secondary" comingSoon>
+            Try Demo
+          </Button>
+          <Button variant="primary">Join Waitlist</Button>
+        </div>
 
         <button
           type="button"

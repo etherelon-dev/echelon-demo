@@ -1,4 +1,5 @@
 import LogoMark from "@/components/ui/LogoMark";
+import VersionBar from "@/components/ui/VersionBar";
 
 export default function DocsFooter() {
   return (
@@ -15,6 +16,8 @@ export default function DocsFooter() {
           Back to echelon.game
         </a>
       </div>
+
+      <VersionBar maxWidthClassName="max-w-[1600px]" />
     </footer>
   );
 }

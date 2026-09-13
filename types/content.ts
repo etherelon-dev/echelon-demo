@@ -41,3 +41,21 @@ export type ArchitectureStep = {
   label: string;
   detail: string;
 };
+
+export type CommunityPlatformStatus = "available" | "coming-soon";
+
+export type CommunityPlatform = {
+  key: string;
+  label: string;
+  description: string;
+  status: CommunityPlatformStatus;
+  icon: LucideIcon;
+  href?: string;
+};
+
+export type CommunityPillar = {
+  number: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+};

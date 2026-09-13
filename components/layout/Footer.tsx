@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import LogoMark from "@/components/ui/LogoMark";
+import VersionBar from "@/components/ui/VersionBar";
 import { socialLinks } from "@/lib/content/social";
 
 export default function Footer() {
@@ -36,6 +37,8 @@ export default function Footer() {
           )}
         </nav>
       </div>
+
+      <VersionBar />
     </footer>
   );
 }
