@@ -62,7 +62,7 @@ export default function RoadmapPath({
               onSelect={onSelect}
             />
             {isSelected ? (
-              <div className="pb-2 pl-0 pt-2 sm:pl-[72px] lg:hidden">
+              <div className="pb-2 pl-[72px] pt-2 lg:hidden">
                 <PhaseDetail key={phase.id} phase={phase} />
               </div>
             ) : null}

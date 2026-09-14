@@ -10,8 +10,10 @@ type RoadmapFiltersProps = {
 };
 
 type IndicatorRect = {
+  top: number;
   left: number;
   width: number;
+  height: number;
 };
 
 const useIsomorphicLayoutEffect =
@@ -35,8 +37,10 @@ export default function RoadmapFilters({
     const buttonRect = activeButton.getBoundingClientRect();
 
     setIndicator({
+      top: buttonRect.top - trackRect.top,
       left: buttonRect.left - trackRect.left,
-      width: buttonRect.width
+      width: buttonRect.width,
+      height: buttonRect.height
     });
     setIsReady(true);
   };
@@ -65,10 +69,15 @@ export default function RoadmapFilters({
         {indicator ? (
           <span
             aria-hidden="true"
-            className={`absolute inset-y-1 rounded-full bg-gold-500/15 ring-1 ring-inset ring-gold-500/50 ${
-              isReady ? "transition-[left,width] duration-300 ease-out" : ""
+            className={`absolute rounded-full bg-gold-500/15 ring-1 ring-inset ring-gold-500/50 ${
+              isReady ? "transition-[top,left,width,height] duration-300 ease-out" : ""
             }`}
-            style={{ left: indicator.left, width: indicator.width }}
+            style={{
+              top: indicator.top,
+              left: indicator.left,
+              width: indicator.width,
+              height: indicator.height
+            }}
           />
         ) : null}
 
