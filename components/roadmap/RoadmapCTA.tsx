@@ -12,7 +12,7 @@ export default function RoadmapCTA() {
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
         <span
-          className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 animate-blob-float rounded-full bg-gold-500/10 blur-[110px] mix-blend-screen"
+          className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 animate-blob-float rounded-full bg-gold-500/10 blur-[110px]"
           style={{ animationDuration: "14s" }}
         />
       </div>

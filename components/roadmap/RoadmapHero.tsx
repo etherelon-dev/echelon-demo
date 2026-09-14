@@ -20,11 +20,11 @@ export default function RoadmapHero() {
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
         <span
-          className="absolute -left-24 top-10 h-72 w-72 animate-blob-float rounded-full bg-gold-500/15 blur-[100px] mix-blend-screen sm:h-96 sm:w-96"
+          className="absolute -left-24 top-10 h-72 w-72 animate-blob-float rounded-full bg-gold-500/15 blur-[100px] sm:h-96 sm:w-96"
           style={{ animationDelay: "0s" }}
         />
         <span
-          className="absolute -right-16 top-40 h-64 w-64 animate-blob-float rounded-full bg-steel-400/15 blur-[100px] mix-blend-screen sm:h-80 sm:w-80"
+          className="absolute -right-16 top-40 h-64 w-64 animate-blob-float rounded-full bg-steel-400/15 blur-[100px] sm:h-80 sm:w-80"
           style={{ animationDelay: "3.5s", animationDuration: "13s" }}
         />
       </div>
