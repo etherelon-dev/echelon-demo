@@ -43,7 +43,7 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-content items-center justify-between px-6 py-5">
-        <a href="#top" className="flex items-center gap-2.5">
+        <a href="/" className="flex items-center gap-2.5">
           <LogoMark />
           <span className="font-display text-lg font-semibold tracking-[0.08em] text-bone">
             ECHELON
