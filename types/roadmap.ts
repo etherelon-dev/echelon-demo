@@ -17,6 +17,14 @@ export type RoadmapMilestone = {
   highlight?: boolean;
   /** Reserved for the single explicitly confirmed token-related milestone. */
   confirmed?: boolean;
+  /** True once this milestone is actually live on the site/product today. */
+  done?: boolean;
+};
+
+export type PhaseProgress = {
+  done: number;
+  total: number;
+  percent: number;
 };
 
 export type RoadmapSpotlight = {

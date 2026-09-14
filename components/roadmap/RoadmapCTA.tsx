@@ -7,6 +7,16 @@ export default function RoadmapCTA() {
     <section className="relative overflow-hidden border-t border-ink-600 py-28 sm:py-36">
       <CommunityMapBackdrop idPrefix="roadmap-cta" />
 
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        <span
+          className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 animate-blob-float rounded-full bg-gold-500/10 blur-[110px] mix-blend-screen"
+          style={{ animationDuration: "14s" }}
+        />
+      </div>
+
       <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-8 px-6 text-center">
         <RevealOnScroll>
           <div className="flex flex-col items-center gap-8">

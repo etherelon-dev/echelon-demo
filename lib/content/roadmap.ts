@@ -11,6 +11,7 @@ import {
   Infinity as InfinityIcon
 } from "lucide-react";
 import type {
+  PhaseProgress,
   RoadmapFilterOption,
   RoadmapPhase,
   RoadmapStatus
@@ -47,21 +48,21 @@ export const roadmapPhases: RoadmapPhase[] = [
     milestones: [
       { label: "Interactive Demo", highlight: true },
       { label: "Waitlist" },
-      { label: "Echelon Website" },
-      { label: "Core Game Vision" },
-      { label: "Living World Concept" },
-      { label: "Territory System Concept" },
-      { label: "Resource System Concept" },
-      { label: "Population System Concept" },
-      { label: "Economy Concept" },
-      { label: "Kingdom System Concept" },
-      { label: "Diplomacy Concept" },
-      { label: "Warfare Concept" },
-      { label: "Player-Driven History Concept" },
-      { label: "Documentation" },
-      { label: "Tokenomics" },
-      { label: "Community Hub" },
-      { label: "Telegram Community" }
+      { label: "Echelon Website", done: true },
+      { label: "Core Game Vision", done: true },
+      { label: "Living World Concept", done: true },
+      { label: "Territory System Concept", done: true },
+      { label: "Resource System Concept", done: true },
+      { label: "Population System Concept", done: true },
+      { label: "Economy Concept", done: true },
+      { label: "Kingdom System Concept", done: true },
+      { label: "Diplomacy Concept", done: true },
+      { label: "Warfare Concept", done: true },
+      { label: "Player-Driven History Concept", done: true },
+      { label: "Documentation", done: true },
+      { label: "Tokenomics", done: true },
+      { label: "Community Hub", done: true },
+      { label: "Telegram Community", done: true }
     ]
   },
   {
@@ -446,3 +447,32 @@ export const currentRoadmapPhase: RoadmapPhase =
 export const initialPhaseCount: number = roadmapPhases
   .filter((phase) => phase.status !== "coming-soon")
   .reduce((max, phase) => Math.max(max, phase.number), 0);
+
+/** Live completion stats for a single phase, based on each milestone's `done` flag. */
+export function getPhaseProgress(phase: RoadmapPhase): PhaseProgress {
+  const total = phase.milestones.length;
+  const done = phase.milestones.filter((milestone) => milestone.done).length;
+  const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+  return { done, total, percent };
+}
+
+/**
+ * Live completion stats across the initial roadmap (phases 0 through the last
+ * numbered phase). "Beyond the Roadmap" is excluded since it's an open-ended
+ * set of future categories, not a fixed milestone count.
+ */
+export const overallRoadmapProgress: PhaseProgress = roadmapPhases
+  .filter((phase) => phase.status !== "coming-soon")
+  .reduce<PhaseProgress>(
+    (acc, phase) => {
+      const { done, total } = getPhaseProgress(phase);
+      const nextDone = acc.done + done;
+      const nextTotal = acc.total + total;
+      return {
+        done: nextDone,
+        total: nextTotal,
+        percent: nextTotal === 0 ? 0 : Math.round((nextDone / nextTotal) * 100)
+      };
+    },
+    { done: 0, total: 0, percent: 0 }
+  );

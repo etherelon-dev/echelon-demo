@@ -60,13 +60,23 @@ const config: Config = {
         "fade-up": {
           "0%": { opacity: "0", transform: "translateY(14px)" },
           "100%": { opacity: "1", transform: "translateY(0)" }
+        },
+        "blob-float": {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "50%": { transform: "translate(24px, -28px) scale(1.08)" }
+        },
+        "chevron-bounce": {
+          "0%, 100%": { transform: "translateY(0)", opacity: "0.5" },
+          "50%": { transform: "translateY(6px)", opacity: "1" }
         }
       },
       animation: {
         "trade-flow": "trade-flow 5s linear infinite",
         "marker-pulse": "marker-pulse 2.8s ease-out infinite",
         "border-glow": "border-glow 4s ease-in-out infinite",
-        "fade-up": "fade-up 0.7s ease-out forwards"
+        "fade-up": "fade-up 0.7s ease-out forwards",
+        "blob-float": "blob-float 11s ease-in-out infinite",
+        "chevron-bounce": "chevron-bounce 1.8s ease-in-out infinite"
       }
     }
   },

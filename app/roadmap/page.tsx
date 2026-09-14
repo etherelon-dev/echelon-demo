@@ -19,7 +19,10 @@ export default function RoadmapPage() {
       <main>
         <RoadmapHero />
 
-        <section className="border-t border-ink-600 py-16 sm:py-20">
+        <section
+          id="progress"
+          className="scroll-mt-24 border-t border-ink-600 py-16 sm:py-20"
+        >
           <div className="mx-auto max-w-content px-6">
             <RoadmapProgress />
           </div>
