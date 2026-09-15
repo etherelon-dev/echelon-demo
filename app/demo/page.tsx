@@ -1,26 +1,27 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import DemoHero from "@/components/worldmap/DemoHero";
+import DemoStatus from "@/components/worldmap/DemoStatus";
 import EchelonWorldMap from "@/components/worldmap/EchelonWorldMap";
 
 export const metadata: Metadata = {
   title: "Demo — Echelon",
-  description: "The raw geographic foundation of the Echelon world."
+  description:
+    "The raw geographic foundation of the Echelon world, centered on Turkey and the surrounding region."
 };
 
+// This page intentionally skips the global marketing <Navbar/> — the map's
+// own in-component <MapHud/> takes its place, matching the reference's
+// slim strategy-game top bar instead of the site's full nav+CTA header.
 export default function DemoPage() {
   return (
     <>
-      <Navbar />
-      <main>
-        <section className="border-t border-ink-600 bg-ink-900 py-10 sm:py-14">
-          <div className="mx-auto max-w-content px-6">
-            <p className="mb-6 font-display text-xs uppercase tracking-[0.3em] text-bone-dim">
-              Echelon Demo
-            </p>
-            <EchelonWorldMap />
-          </div>
+      <main className="flex min-h-screen flex-col">
+        <DemoHero />
+        <section className="relative h-[68vh] min-h-[420px] w-full sm:h-[74vh]">
+          <EchelonWorldMap />
         </section>
+        <DemoStatus />
       </main>
       <Footer />
     </>

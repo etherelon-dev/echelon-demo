@@ -9,6 +9,10 @@ interface Transform {
 interface Options {
   minScale?: number;
   maxScale?: number;
+  /** Starting transform — e.g. a focus transform centered on a region
+   * instead of the whole-world identity view. Also what `reset()` returns
+   * to, so "recenter" means "back to this view", not "back to the world". */
+  initialTransform?: Transform;
 }
 
 const IDENTITY: Transform = { scale: 1, x: 0, y: 0 };
@@ -29,8 +33,9 @@ export function useMapZoomPan(
 ) {
   const minScale = options.minScale ?? 1;
   const maxScale = options.maxScale ?? 14;
+  const initialTransform = options.initialTransform ?? IDENTITY;
 
-  const [transform, setTransform] = useState<Transform>(IDENTITY);
+  const [transform, setTransform] = useState<Transform>(initialTransform);
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const activePointers = useRef<Map<number, { x: number; y: number }>>(new Map());
@@ -98,7 +103,7 @@ export function useMapZoomPan(
     [zoomAtPoint, cx, cy]
   );
 
-  const reset = useCallback(() => setTransform(IDENTITY), []);
+  const reset = useCallback(() => setTransform(initialTransform), [initialTransform]);
 
   const onWheel = useCallback(
     (e: React.WheelEvent<SVGSVGElement>) => {
