@@ -1,32 +1,31 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import LakeLayer from "@/components/worldmap/LakeLayer";
 import MapControls from "@/components/worldmap/MapControls";
 import MapHud from "@/components/worldmap/MapHud";
 import PhysicalGeographyLayer from "@/components/worldmap/PhysicalGeographyLayer";
 import RegionMinimap from "@/components/worldmap/RegionMinimap";
 import RiverLayer from "@/components/worldmap/RiverLayer";
 import TerrainLayer from "@/components/worldmap/TerrainLayer";
-import TerritoryBoundaryLayer from "@/components/worldmap/TerritoryBoundaryLayer";
 import { useMapZoomPan } from "@/components/worldmap/useMapZoomPan";
 import WorldMinimap from "@/components/worldmap/WorldMinimap";
 import { INITIAL_FOCUS_TRANSFORM } from "@/lib/geo/focus";
 import { MAP_VIEWBOX_HEIGHT, MAP_VIEWBOX_WIDTH, WORLD_LAND_PATH } from "@/lib/geo/worldMapGeometry";
 
-function clamp01(value: number) {
-  return Math.min(1, Math.max(0, value));
-}
-
 /**
  * The geographic foundation of the Echelon world — a real, interactive
  * map (not a static image), initially centered on Turkey/Anatolia purely
- * for load performance. Physical geography + procedural terrain/territory
- * styling only: no territory selection, no labels, no gameplay systems.
- * Pan, zoom, and recenter are the only interactions.
+ * for load performance. Physical geography + flat-color terrain
+ * classification only: no political/territory layers, no labels, no
+ * gameplay systems yet. Pan, zoom, and recenter are the only interactions.
+ *
+ * Layer order (back to front): water background, base land, terrain
+ * regions, lakes, rivers, coastline.
  */
 export default function EchelonWorldMap() {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [showTerritories, setShowTerritories] = useState(true);
+  const [showTerrainColors, setShowTerrainColors] = useState(true);
 
   const { svgRef, transform, transformString, handlers, zoomIn, zoomOut, reset } = useMapZoomPan(
     MAP_VIEWBOX_WIDTH,
@@ -42,12 +41,6 @@ export default function EchelonWorldMap() {
       containerRef.current.requestFullscreen?.();
     }
   }, []);
-
-  // Territory subdivisions are the local/strategic level of detail — fade
-  // them in once the camera is zoomed in enough to read as provinces
-  // rather than clutter over a world-scale view. At the initial Turkey
-  // focus (scale ~8) this is already fully visible by design.
-  const territoryOpacity = showTerritories ? clamp01((transform.scale - 3) / 4) : 0;
 
   return (
     <div ref={containerRef} className="relative h-full w-full select-none overflow-hidden bg-[#04050A]">
@@ -74,13 +67,18 @@ export default function EchelonWorldMap() {
           </clipPath>
         </defs>
 
+        {/* 1. Water background */}
         <rect x={0} y={0} width={MAP_VIEWBOX_WIDTH} height={MAP_VIEWBOX_HEIGHT} fill="url(#echelon-map-ocean)" />
 
         <g transform={transformString}>
-          <TerrainLayer />
-          <PhysicalGeographyLayer />
+          {/* 2 & 3. Base land + terrain regions */}
+          <TerrainLayer showClassification={showTerrainColors} />
+          {/* 4. Lakes */}
+          <LakeLayer />
+          {/* 5. Rivers */}
           <RiverLayer />
-          <TerritoryBoundaryLayer opacity={territoryOpacity} />
+          {/* 6. Coastline */}
+          <PhysicalGeographyLayer />
         </g>
 
         <rect
@@ -98,8 +96,8 @@ export default function EchelonWorldMap() {
         onZoomIn={zoomIn}
         onZoomOut={zoomOut}
         onRecenter={reset}
-        onToggleLayers={() => setShowTerritories((v) => !v)}
-        layersActive={showTerritories}
+        onToggleLayers={() => setShowTerrainColors((v) => !v)}
+        layersActive={showTerrainColors}
       />
       <WorldMinimap transform={transform} />
       <RegionMinimap

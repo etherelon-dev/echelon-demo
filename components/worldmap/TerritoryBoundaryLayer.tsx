@@ -23,6 +23,14 @@ interface TerritoryBoundaryLayerProps {
  * (procedural Voronoi, not sourced administrative boundaries). Clipped to
  * the coastline via the shared land clip-path so cells never spill into
  * open water.
+ *
+ * NOT currently rendered by EchelonWorldMap: the project brief for the
+ * terrain-classification pass explicitly calls for no political/gameplay
+ * layers yet (no borders, no territory selection), and this component
+ * predates that constraint. Left in place, unused, rather than deleted —
+ * it's a genuine building block for a later gameplay layer and slots back
+ * into the map's layer stack with no changes needed once territories are
+ * wanted again.
  */
 export default function TerritoryBoundaryLayer({ opacity }: TerritoryBoundaryLayerProps) {
   if (opacity <= 0) return null;

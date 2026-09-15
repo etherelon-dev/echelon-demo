@@ -1,100 +1,38 @@
-import { HIGH_DETAIL_CANONICAL_BBOX } from "@/lib/geo/focus";
+import { PROJECTED_TERRAIN_REGIONS } from "@/lib/geo/terrainGeometry";
+import { TERRAIN_TYPES } from "@/lib/geo/terrainTypes";
 import { WORLD_LAND_PATH } from "@/lib/geo/worldMapGeometry";
 
+interface TerrainLayerProps {
+  /** Whether to paint the classified terrain regions on top of the base
+   * land color. When false, the map shows a plain land silhouette. */
+  showClassification: boolean;
+}
+
 /**
- * Layer — stylized terrain relief.
+ * Layer — terrain classification, flat colors only.
  *
- * There is no elevation/biome dataset in this project
- * (world-land-110m.json is coastline only) and this build has no network
- * access to fetch one — see lib/geo/README.md. Real elevation-derived
- * shading isn't possible here, so this uses a procedural shaded-relief
- * texture instead (SVG feTurbulence -> feDiffuseLighting, clipped to the
- * coastline via the source shape's own alpha channel): geographically
- * plausible in tone and texture, but not sourced from real elevation
- * data. Swap this for the real thing once a relief/biome dataset is
- * available; nothing downstream depends on how the fill is produced.
+ * Renders the base "land" color across the whole coastline, then paints
+ * each classified terrain region (plains/mountains/forest/etc., from
+ * lib/geo/terrainRegions.ts) on top in flat fill — no gradients, no
+ * shading, no procedural noise. Everything here is wrapped in the shared
+ * land clip-path, so hand-authored region edges can never spill past the
+ * real coastline even when they're only approximate.
  *
- * Two fidelity tiers implement the requested LOD: a coarse pass across all
- * land, and a finer pass layered on top only within the high-detail
- * region around Turkey, feathered at the edge so the transition isn't a
- * hard seam.
+ * This replaces an earlier feTurbulence/feDiffuseLighting-based "shaded
+ * relief" approach. That was procedural noise standing in for terrain that
+ * didn't exist yet, not real classification, and complex SVG filter chains
+ * like that are exactly the kind of thing that can render as solid black
+ * or fail inconsistently across browsers — flat fills sidestep that
+ * entirely.
  */
-export default function TerrainLayer() {
-  const hd = HIGH_DETAIL_CANONICAL_BBOX;
-  const hdWidth = hd.maxX - hd.minX;
-  const hdHeight = hd.maxY - hd.minY;
-
+export default function TerrainLayer({ showClassification }: TerrainLayerProps) {
   return (
-    <>
-      <defs>
-        <filter id="echelon-terrain-coarse" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.012 0.018"
-            numOctaves={3}
-            seed={11}
-            result="noise"
-          />
-          <feDiffuseLighting
-            in="noise"
-            surfaceScale={2.2}
-            diffuseConstant={1.05}
-            lightingColor="#5B5138"
-            result="lit"
-          >
-            <feDistantLight azimuth={235} elevation={55} />
-          </feDiffuseLighting>
-          <feComponentTransfer in="lit" result="toned">
-            <feFuncR type="linear" slope={0.9} intercept={0.02} />
-            <feFuncG type="linear" slope={0.82} intercept={0.03} />
-            <feFuncB type="linear" slope={0.6} intercept={0.02} />
-          </feComponentTransfer>
-          <feComposite in="toned" in2="SourceAlpha" operator="in" />
-        </filter>
-
-        <filter id="echelon-terrain-fine" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.045 0.065"
-            numOctaves={5}
-            seed={7}
-            result="noise"
-          />
-          <feDiffuseLighting
-            in="noise"
-            surfaceScale={3.4}
-            diffuseConstant={1.15}
-            lightingColor="#6B5D3E"
-            result="lit"
-          >
-            <feDistantLight azimuth={235} elevation={52} />
-          </feDiffuseLighting>
-          <feComponentTransfer in="lit" result="toned">
-            <feFuncR type="linear" slope={0.95} intercept={0.03} />
-            <feFuncG type="linear" slope={0.86} intercept={0.04} />
-            <feFuncB type="linear" slope={0.62} intercept={0.02} />
-          </feComponentTransfer>
-          <feComposite in="toned" in2="SourceAlpha" operator="in" />
-        </filter>
-
-        {/* Soft radial falloff so the fine/coarse LOD boundary fades
-            instead of cutting off as a hard rectangle. */}
-        <radialGradient id="echelon-detail-falloff" cx="50%" cy="50%" r="58%">
-          <stop offset="65%" stopColor="#ffffff" stopOpacity={1} />
-          <stop offset="100%" stopColor="#ffffff" stopOpacity={0} />
-        </radialGradient>
-        <mask id="echelon-detail-mask">
-          <rect x={hd.minX} y={hd.minY} width={hdWidth} height={hdHeight} fill="url(#echelon-detail-falloff)" />
-        </mask>
-      </defs>
-
-      {/* Solid base first so filter antialiasing never leaves a coastline
-          hairline showing the ocean underneath. */}
-      <path d={WORLD_LAND_PATH} fill="#24261F" fillRule="evenodd" />
-      <path d={WORLD_LAND_PATH} fill="#24261F" fillRule="evenodd" filter="url(#echelon-terrain-coarse)" />
-      <g mask="url(#echelon-detail-mask)">
-        <path d={WORLD_LAND_PATH} fill="#24261F" fillRule="evenodd" filter="url(#echelon-terrain-fine)" />
-      </g>
-    </>
+    <g clipPath="url(#echelon-land-clip)">
+      <path d={WORLD_LAND_PATH} fill={TERRAIN_TYPES.land.color} fillRule="evenodd" />
+      {showClassification &&
+        PROJECTED_TERRAIN_REGIONS.map((region, index) => (
+          <path key={index} d={region.path} fill={TERRAIN_TYPES[region.type].color} />
+        ))}
+    </g>
   );
 }

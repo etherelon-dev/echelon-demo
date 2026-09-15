@@ -33,7 +33,7 @@ export default function MapControls({
       </button>
       <button
         type="button"
-        aria-label="Toggle territory boundaries"
+        aria-label="Toggle terrain colors"
         aria-pressed={layersActive}
         onClick={onToggleLayers}
         className={`${buttonClasses} ${layersActive ? "text-gold-300" : ""}`}
