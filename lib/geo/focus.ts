@@ -1,19 +1,8 @@
 import { MAP_VIEWBOX_HEIGHT, MAP_VIEWBOX_WIDTH, worldProjector } from "./worldMapGeometry";
 import type { Projector } from "./projection";
+import type { CanonicalBBox, LonLatBBox } from "./bbox";
 
-export interface LonLatBBox {
-  lonMin: number;
-  lonMax: number;
-  latMin: number;
-  latMax: number;
-}
-
-export interface CanonicalBBox {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
-}
+export type { CanonicalBBox, LonLatBBox };
 
 export interface FocusTransform {
   scale: number;

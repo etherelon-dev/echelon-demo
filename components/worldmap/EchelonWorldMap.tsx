@@ -44,10 +44,13 @@ export default function EchelonWorldMap() {
 
   return (
     <div ref={containerRef} className="relative h-full w-full select-none overflow-hidden bg-[#04050A]">
+      {/* "meet" (not "slice") so the container's aspect ratio never crops
+          part of the map away — worst case some letterboxing, which reads
+          as more of the dark background rather than losing geography. */}
       <svg
         ref={svgRef}
         viewBox={`0 0 ${MAP_VIEWBOX_WIDTH} ${MAP_VIEWBOX_HEIGHT}`}
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label="Interactive geographic map of the Echelon world, initially centered on Turkey and the surrounding region"
         className="h-full w-full touch-none"

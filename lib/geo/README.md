@@ -4,17 +4,40 @@
 
 - `topojson.ts` — dependency-free TopoJSON decoder (arc delta-decoding, arc-index
   → ring stitching, antimeridian unwrapping). Stands in for `topojson-client`.
-- `projection.ts` — Equal Earth projection + viewport-fitting projector. Stands
-  in for `d3-geo` / `d3-geo-projection`.
+- `bbox.ts` — shared `LonLatBBox`/`CanonicalBBox` shape types, with no logic
+  of their own, so `activeMapExtent.ts` and `focus.ts` can both use them
+  without a circular import between the two.
+- `activeMapExtent.ts` — computes `ACTIVE_MAP_BBOX`: the lon/lat box the
+  active game map actually renders (the existing terrain/river/lake data's
+  own bounding box, plus a small self-scaling padding margin). Everything
+  outside it is cropped away — see `worldLand.ts` and `worldMapGeometry.ts`.
+- `clip.ts` — Sutherland-Hodgman rectangle clipping for lon/lat polygon rings
+  (`clipPolygonsToBBox`), used to crop the world land dataset down to
+  `ACTIVE_MAP_BBOX`. Correct even for a landmass that straddles the box (the
+  real-world Natural Earth data's Afro-Eurasian supercontinent, trimmed down
+  to just its Europe/Anatolia portion) — see the module doc comment for why.
+- `projection.ts` — the flat/equirectangular projection the active map uses
+  (`equirectangularRaw`; x = longitude, y = latitude, no spherical curvature)
+  plus two viewport-fitting projector builders: `createProjector` (fits to
+  scanned polygon geometry — a general utility, not currently used to build
+  the active map's projector) and `createProjectorForBBox` (fits to a
+  *declared* lon/lat box — this is what `worldMapGeometry.ts` uses, fitting
+  to `ACTIVE_MAP_BBOX`). The old Equal Earth globe projection
+  (`equalEarthRaw`) is kept for reference but is no longer used. Stands in
+  for `d3-geo` / `d3-geo-projection`.
 - `path.ts` — projected geometry → SVG path `d` strings: `polygonsToPathData`
   for topojson-decoded land, `ringToPathData`/`lineToPathData` for the
   simplified terrain/lake/river data below.
 - `worldLand.ts` — decodes `data/world-land-110m.json` (the existing project
   asset — Natural Earth land geometry via world-atlas, public domain) into
-  `Polygon[]`.
-- `worldMapGeometry.ts` — the canonical viewBox, a projector fit to it, and the
-  precomputed land path. Every map layer projects through `worldProjector` so
-  layers stay in registration.
+  `Polygon[]`, then crops it to `ACTIVE_MAP_BBOX` via `clip.ts`. The exported
+  `WORLD_LAND_POLYGONS` is the *cropped* set — real coastline geometry, just
+  trimmed to the geography the game actually uses.
+- `worldMapGeometry.ts` — the canonical viewBox (sized to `ACTIVE_MAP_BBOX`'s
+  own lon/lat aspect ratio, so the flat projection fills it with no wasted
+  space), the flat projector fit to that box, and the precomputed cropped
+  land path. Every map layer projects through `worldProjector` so layers
+  stay in registration.
 - `terrainTypes.ts` — centralized terrain classification: id, display name,
   flat color, and layer kind (region/water/line) for land, plains, mountains,
   forest, swamp, tundra, sand, desert, lake, and river. The only place any
@@ -51,11 +74,19 @@ with no change to callers.
 
 ## What's rendered right now
 
-- **Coastline** — the 110m-resolution world land silhouette (real Natural
-  Earth data, whole-world coverage), zoom/pan/reset navigation. The initial
-  camera still frames Turkey/Anatolia (`TURKEY_FOCUS_BBOX` in `focus.ts`) —
-  unchanged — but panning/zooming out reveals the rest of Europe, which is
-  now classified the same way.
+- **Map foundation** — a flat 2D equirectangular map (no globe projection, no
+  spherical curvature), cropped to the geographic extent the terrain system
+  below actually covers (`ACTIVE_MAP_BBOX`, in `activeMapExtent.ts`) rather
+  than the whole world. Real Natural Earth land geometry throughout — the
+  crop trims rings down to the box (`clip.ts`), it never invents or
+  hand-draws land. `preserveAspectRatio="xMidYMid meet"` on the outer `<svg>`
+  means the container's aspect ratio can letterbox the map but never crops
+  or distorts it, on any device width.
+- **Coastline** — the 110m-resolution land silhouette for the active extent,
+  zoom/pan/reset navigation. The initial camera still frames Turkey/Anatolia
+  (`TURKEY_FOCUS_BBOX` in `focus.ts`) — unchanged — but panning/zooming out
+  reveals the rest of Europe within the active extent, which is now
+  classified the same way.
 - **Terrain classification** — flat colors only. The whole coastline is
   filled with the base "land" color, then hand-authored macro-regions
   (mountains, plains, forest, tundra, swamp, sand, desert) are painted on
