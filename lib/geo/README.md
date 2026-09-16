@@ -79,9 +79,15 @@ with no change to callers.
   below actually covers (`ACTIVE_MAP_BBOX`, in `activeMapExtent.ts`) rather
   than the whole world. Real Natural Earth land geometry throughout — the
   crop trims rings down to the box (`clip.ts`), it never invents or
-  hand-draws land. `preserveAspectRatio="xMidYMid meet"` on the outer `<svg>`
-  means the container's aspect ratio can letterbox the map but never crops
-  or distorts it, on any device width.
+  hand-draws land. `preserveAspectRatio="xMidYMid slice"` on the outer
+  `<svg>` means the map always fills its panel edge to edge on any device
+  width/aspect — the active extent's own box is quite wide (Iceland to the
+  Urals), so a tall/narrow phone viewport crops some width off both sides
+  (centered) rather than shrinking the whole map down and leaving dead
+  letterboxed space below it. Nothing is lost: pan/zoom reaches whatever a
+  given viewport's crop trims, and the minimaps' viewport indicator
+  accounts for the crop too (`visibleCanonicalBBoxForContainer` in
+  `focus.ts`).
 - **Coastline** — the 110m-resolution land silhouette for the active extent,
   zoom/pan/reset navigation. The initial camera still frames Turkey/Anatolia
   (`TURKEY_FOCUS_BBOX` in `focus.ts`) — unchanged — but panning/zooming out

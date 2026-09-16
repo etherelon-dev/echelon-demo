@@ -85,15 +85,17 @@ export function computeFocusTransform(
   };
 }
 
-/**
- * Given the map's current pan/zoom transform, returns the currently
- * visible region in canonical (world-space / viewBox) coordinates — used
- * to draw the viewport-indicator rectangle on the minimaps.
- */
-export function visibleCanonicalBBox(
+/** Shared tail: inverts the pan/zoom transform through an arbitrary
+ * screen-space rectangle (in viewBox coordinates) back to canonical
+ * (world-space) coordinates. */
+function canonicalFromScreenRect(
   transform: FocusTransform,
   viewBoxWidth: number,
-  viewBoxHeight: number
+  viewBoxHeight: number,
+  screenMinX: number,
+  screenMinY: number,
+  screenMaxX: number,
+  screenMaxY: number
 ): CanonicalBBox {
   const cx = viewBoxWidth / 2;
   const cy = viewBoxHeight / 2;
@@ -101,14 +103,69 @@ export function visibleCanonicalBBox(
     (sx - transform.x - cx) / transform.scale + cx,
     (sy - transform.y - cy) / transform.scale + cy
   ];
-  const [x0, y0] = toCanonical(0, 0);
-  const [x1, y1] = toCanonical(viewBoxWidth, viewBoxHeight);
+  const [x0, y0] = toCanonical(screenMinX, screenMinY);
+  const [x1, y1] = toCanonical(screenMaxX, screenMaxY);
   return {
     minX: Math.min(x0, x1),
     maxX: Math.max(x0, x1),
     minY: Math.min(y0, y1),
     maxY: Math.max(y0, y1)
   };
+}
+
+/**
+ * Given the map's current pan/zoom transform, returns the currently
+ * visible region in canonical (world-space / viewBox) coordinates — used
+ * to draw the viewport-indicator rectangle on the minimaps.
+ *
+ * This assumes the full viewBox is on screen (as with
+ * `preserveAspectRatio="meet"`). The live map uses "slice" instead (see
+ * EchelonWorldMap.tsx), which crops part of the viewBox off screen — use
+ * `visibleCanonicalBBoxForContainer` below for a result that matches what
+ * "slice" actually shows.
+ */
+export function visibleCanonicalBBox(
+  transform: FocusTransform,
+  viewBoxWidth: number,
+  viewBoxHeight: number
+): CanonicalBBox {
+  return canonicalFromScreenRect(transform, viewBoxWidth, viewBoxHeight, 0, 0, viewBoxWidth, viewBoxHeight);
+}
+
+/**
+ * Same as `visibleCanonicalBBox`, but also accounts for
+ * `preserveAspectRatio="xMidYMid slice"`: given the actual rendered
+ * container size, first works out the centered sub-rectangle of the
+ * viewBox that "slice" keeps on screen (it scales up to cover the
+ * container on the binding axis and crops the other axis's excess), then
+ * inverts the pan/zoom transform through *that* sub-rectangle instead of
+ * the full viewBox. Falls back to the full-viewBox behavior when the
+ * container size isn't known yet (e.g. before first layout).
+ */
+export function visibleCanonicalBBoxForContainer(
+  transform: FocusTransform,
+  viewBoxWidth: number,
+  viewBoxHeight: number,
+  containerWidth: number,
+  containerHeight: number
+): CanonicalBBox {
+  if (!containerWidth || !containerHeight) {
+    return visibleCanonicalBBox(transform, viewBoxWidth, viewBoxHeight);
+  }
+  const sliceScale = Math.max(containerWidth / viewBoxWidth, containerHeight / viewBoxHeight);
+  const visibleWidth = Math.min(viewBoxWidth, containerWidth / sliceScale);
+  const visibleHeight = Math.min(viewBoxHeight, containerHeight / sliceScale);
+  const screenMinX = (viewBoxWidth - visibleWidth) / 2;
+  const screenMinY = (viewBoxHeight - visibleHeight) / 2;
+  return canonicalFromScreenRect(
+    transform,
+    viewBoxWidth,
+    viewBoxHeight,
+    screenMinX,
+    screenMinY,
+    screenMinX + visibleWidth,
+    screenMinY + visibleHeight
+  );
 }
 
 /** Turkey / Anatolia and the immediate surrounding region — the demo's initial camera. */

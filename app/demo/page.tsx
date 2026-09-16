@@ -18,7 +18,14 @@ export default function DemoPage() {
     <>
       <main className="flex min-h-screen flex-col">
         <DemoHero />
-        <section className="relative h-[68vh] min-h-[420px] w-full sm:h-[74vh]">
+        {/* preserveAspectRatio="slice" (see EchelonWorldMap) fills this panel
+            edge to edge by cropping some width off both sides on a
+            portrait/narrow viewport — a shorter panel here means less of
+            that crop, so this is trimmed down from the old 68/74vh (sized
+            back when the map used "meet" and needed a tall box to avoid
+            looking cramped) to keep more of the initial Turkey/Anatolia
+            framing on screen on phones. */}
+        <section className="relative h-[48vh] min-h-[360px] w-full sm:h-[62vh]">
           <EchelonWorldMap />
         </section>
         <DemoStatus />

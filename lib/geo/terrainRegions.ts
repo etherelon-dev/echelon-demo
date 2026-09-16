@@ -39,30 +39,42 @@ export interface TerrainRegionDefinition {
 export const TERRAIN_REGIONS: TerrainRegionDefinition[] = [
   // --- Broad base regions first; specific overrides layer on top below ---
 
-  // Central Anatolian Plateau — plains/plateau around Ankara/Konya.
+  // Central Anatolian Plateau — plains/plateau around Ankara/Konya/Kayseri/Sivas.
   {
     type: "plains",
     ring: [
-      [29.5, 38.0],
-      [34.5, 37.8],
-      [36.5, 38.8],
-      [36.0, 40.0],
-      [33.0, 40.3],
-      [30.0, 39.6],
-      [29.0, 38.8]
+      [29.3, 38.2],
+      [30.5, 37.9],
+      [32.0, 37.7],
+      [33.5, 37.6],
+      [35.0, 37.8],
+      [36.3, 38.3],
+      [37.0, 39.0],
+      [36.7, 39.8],
+      [35.5, 40.2],
+      [33.8, 40.3],
+      [32.0, 40.1],
+      [30.3, 39.7],
+      [29.2, 39.0]
     ]
   },
 
-  // Southeastern Anatolia — broad dry steppe/lowlands north of the Syrian border.
+  // Southeastern Anatolia — broad dry steppe/lowlands around
+  // Diyarbakır/Mardin/Urfa/Gaziantep, north of the Syrian border.
   {
     type: "plains",
     ring: [
-      [37.0, 36.5],
-      [42.5, 36.7],
-      [42.8, 37.8],
+      [37.0, 36.6],
+      [38.5, 36.5],
+      [40.0, 36.6],
+      [41.5, 36.7],
+      [42.6, 37.0],
+      [42.8, 37.7],
+      [41.5, 38.0],
       [40.0, 38.0],
-      [38.0, 37.8],
-      [37.0, 37.3]
+      [38.5, 37.9],
+      [37.3, 37.5],
+      [36.8, 37.0]
     ]
   },
 
@@ -79,85 +91,128 @@ export const TERRAIN_REGIONS: TerrainRegionDefinition[] = [
     ]
   },
 
-  // Pontic Mountains — belt along the Black Sea coast.
+  // Pontic Mountains — belt along the Black Sea coast, Sakarya to the
+  // Georgian border past Trabzon.
   {
     type: "mountains",
     ring: [
-      [27.5, 40.8],
-      [31.0, 41.0],
-      [35.0, 40.9],
-      [39.0, 40.6],
-      [42.0, 40.4],
-      [42.2, 41.3],
-      [38.5, 41.7],
-      [34.0, 41.8],
+      [27.3, 40.9],
+      [29.0, 41.0],
+      [31.0, 41.15],
+      [33.0, 41.1],
+      [35.0, 41.0],
+      [37.0, 40.9],
+      [39.0, 40.75],
+      [41.0, 40.6],
+      [42.3, 40.5],
+      [42.5, 41.2],
+      [41.5, 41.5],
+      [40.0, 41.6],
+      [38.0, 41.75],
+      [36.0, 41.85],
+      [34.0, 41.9],
+      [32.0, 41.8],
       [30.0, 41.6],
-      [27.5, 41.3]
+      [28.0, 41.4],
+      [27.0, 41.1]
     ]
   },
 
-  // Taurus Mountains — belt along the Mediterranean coast.
+  // Taurus Mountains — belt along the Mediterranean coast from Antalya
+  // through Adana, bending northeast to meet the Eastern Highlands.
   {
     type: "mountains",
     ring: [
-      [29.0, 36.4],
-      [31.5, 36.6],
-      [34.5, 36.8],
-      [37.0, 37.0],
-      [38.3, 37.5],
-      [37.5, 38.0],
-      [34.0, 37.8],
-      [31.0, 37.6],
-      [29.0, 37.2]
+      [29.0, 36.5],
+      [30.2, 36.3],
+      [31.5, 36.5],
+      [32.8, 36.5],
+      [34.2, 36.7],
+      [35.3, 36.9],
+      [36.3, 37.2],
+      [37.3, 37.4],
+      [38.3, 37.6],
+      [38.0, 38.1],
+      [37.0, 38.0],
+      [35.8, 37.9],
+      [34.5, 37.7],
+      [33.0, 37.6],
+      [31.5, 37.5],
+      [30.0, 37.3],
+      [29.0, 37.0]
     ]
   },
 
-  // Caucasus — northeast of Anatolia, beyond the Turkish border.
+  // Caucasus — Greater and Lesser Caucasus, northeast of Anatolia beyond
+  // the Turkish border, toward Tbilisi/Yerevan/Baku.
   {
     type: "mountains",
     ring: [
-      [41.0, 40.8],
-      [46.5, 40.8],
-      [47.0, 43.0],
-      [43.5, 43.5],
-      [41.0, 42.0]
+      [41.0, 40.9],
+      [42.5, 41.5],
+      [44.0, 42.2],
+      [45.5, 42.7],
+      [47.0, 42.5],
+      [48.3, 41.8],
+      [47.5, 41.0],
+      [46.0, 40.5],
+      [44.0, 40.2],
+      [42.0, 40.5]
     ]
   },
 
-  // Zagros foothills — southeast edge of the visible region (Iran/Iraq border).
+  // Zagros — Iran/Iraq border range past Kirkuk/Sulaymaniyah/Kermanshah,
+  // southeast edge of the visible region.
   {
     type: "mountains",
     ring: [
-      [44.0, 33.0],
-      [48.0, 33.5],
-      [48.0, 37.0],
-      [45.0, 37.5],
-      [43.5, 35.0]
+      [43.5, 34.8],
+      [44.5, 33.3],
+      [46.5, 32.5],
+      [48.0, 32.8],
+      [48.3, 34.5],
+      [47.5, 36.3],
+      [45.5, 37.3],
+      [44.0, 37.0],
+      [43.3, 35.8]
     ]
   },
 
-  // Balkan uplift — western edge of the visible region.
+  // Balkan uplift — Dinaric Alps' southern continuation through Albania
+  // and the Šar/Korab ranges, western edge of the visible region.
   {
     type: "mountains",
     ring: [
-      [19.5, 41.0],
-      [23.5, 41.0],
-      [24.5, 42.5],
+      [19.0, 40.0],
+      [19.8, 40.7],
+      [20.5, 41.3],
+      [21.5, 41.8],
+      [22.5, 42.0],
+      [23.5, 42.2],
+      [23.8, 42.8],
+      [22.5, 43.2],
       [21.0, 43.0],
-      [19.0, 42.0]
+      [19.8, 42.5],
+      [19.0, 41.5],
+      [18.7, 40.7]
     ]
   },
 
-  // Aegean coast/hills — vegetated western Anatolia.
+  // Aegean coast/hills — vegetated western Anatolia around
+  // İzmir/Bodrum/Çanakkale.
   {
     type: "forest",
     ring: [
-      [26.3, 38.0],
-      [28.5, 37.8],
-      [29.3, 38.8],
-      [28.5, 39.8],
-      [27.0, 40.0],
-      [26.2, 39.0]
+      [26.0, 37.9],
+      [27.2, 37.0],
+      [28.3, 37.5],
+      [29.0, 38.0],
+      [29.4, 38.7],
+      [29.0, 39.5],
+      [28.2, 40.0],
+      [27.0, 40.2],
+      [26.2, 39.6],
+      [25.9, 38.7]
     ]
   },
 
@@ -173,16 +228,21 @@ export const TERRAIN_REGIONS: TerrainRegionDefinition[] = [
     ]
   },
 
-  // Levant coastal strip — Lebanon mountains and coast.
+  // Levant coastal strip — Lebanon mountains and coast, Haifa to Latakia.
   {
     type: "forest",
     ring: [
-      [35.0, 33.0],
-      [36.5, 33.5],
-      [36.8, 34.8],
-      [35.8, 35.5],
-      [35.3, 34.5],
-      [34.8, 33.8]
+      [34.9, 32.7],
+      [35.3, 33.0],
+      [35.6, 33.5],
+      [35.95, 33.9],
+      [36.2, 34.4],
+      [36.5, 35.0],
+      [36.2, 35.7],
+      [35.6, 35.6],
+      [35.2, 34.9],
+      [34.9, 34.1],
+      [34.7, 33.3]
     ]
   },
 
@@ -198,16 +258,22 @@ export const TERRAIN_REGIONS: TerrainRegionDefinition[] = [
     ]
   },
 
-  // Syrian/northern Arabian desert — visible south of the Anatolian focus.
+  // Syrian desert — visible south of the Anatolian focus, past
+  // Damascus/Palmyra/Deir ez-Zor. Continues into the North Africa &
+  // Arabian Peninsula desert belt added further below.
   {
     type: "desert",
     ring: [
-      [37.0, 32.0],
-      [42.0, 31.5],
-      [42.5, 33.0],
-      [40.0, 35.5],
-      [37.5, 35.5],
-      [36.5, 34.0]
+      [36.5, 32.5],
+      [38.0, 31.8],
+      [40.0, 31.6],
+      [42.0, 31.4],
+      [43.0, 32.5],
+      [42.5, 34.0],
+      [40.5, 35.3],
+      [38.5, 35.6],
+      [37.0, 34.8],
+      [36.0, 33.8]
     ]
   },
 
@@ -814,6 +880,351 @@ export const TERRAIN_REGIONS: TerrainRegionDefinition[] = [
       [-16.0, 63.5],
       [-15.5, 63.8],
       [-17.5, 63.9]
+    ]
+  },
+
+  // ============================================================
+  // North Africa & the Arabian Peninsula — extends the map south from
+  // the original Anatolia/Levant coverage to the natural next ring of
+  // real geography around the Mediterranean and Red Sea basins: the
+  // Maghreb, the Sahara, the Nile, and the Arabian desert/mountain belt.
+  // Same rules as above: broad regions first, specific overrides on top;
+  // hand-authored macro-shapes anchored on real cities/ranges, not
+  // sourced boundary data.
+  // ============================================================
+
+  // --- North Africa ---
+
+  // Sahara Desert — western half, Western Sahara through the Algerian
+  // interior (Tindouf/Adrar).
+  {
+    type: "desert",
+    ring: [
+      [-13.5, 21.0],
+      [-11.5, 25.5],
+      [-9.0, 28.5],
+      [-5.0, 30.5],
+      [0.0, 31.0],
+      [3.0, 30.0],
+      [3.0, 27.0],
+      [0.0, 23.0],
+      [-5.0, 21.0],
+      [-10.0, 20.5]
+    ]
+  },
+
+  // Sahara Desert — Libyan/Egyptian half, Ghat and Kufra through Egypt's
+  // Western Desert, up to the Nile Valley/Delta (painted on top below).
+  {
+    type: "desert",
+    ring: [
+      [3.0, 23.0],
+      [3.0, 30.0],
+      [9.0, 31.5],
+      [15.0, 32.3],
+      [20.0, 31.8],
+      [25.0, 31.3],
+      [29.5, 30.8],
+      [29.8, 28.0],
+      [28.0, 24.0],
+      [24.0, 20.5],
+      [18.0, 19.5],
+      [10.0, 20.0],
+      [5.0, 20.5]
+    ]
+  },
+
+  // High Atlas — Morocco, Agadir through Marrakech to Midelt.
+  {
+    type: "mountains",
+    ring: [
+      [-9.7, 30.4],
+      [-8.5, 30.9],
+      [-7.0, 31.2],
+      [-5.5, 31.8],
+      [-4.3, 32.4],
+      [-3.8, 32.9],
+      [-4.5, 33.1],
+      [-6.0, 32.6],
+      [-7.8, 32.0],
+      [-9.2, 31.3]
+    ]
+  },
+
+  // Rif — northern Morocco coastal range, Tetouan to Al Hoceima.
+  {
+    type: "mountains",
+    ring: [
+      [-5.8, 35.1],
+      [-5.0, 35.0],
+      [-3.9, 35.1],
+      [-3.6, 35.35],
+      [-4.3, 35.7],
+      [-5.3, 35.75],
+      [-5.9, 35.4]
+    ]
+  },
+
+  // Tell Atlas — coastal Algeria/Tunisia, Algiers through Constantine to
+  // Tunis and the Kabylie hills.
+  {
+    type: "mountains",
+    ring: [
+      [-1.5, 35.0],
+      [0.5, 35.6],
+      [3.0, 36.5],
+      [5.5, 36.4],
+      [7.5, 36.7],
+      [9.5, 36.9],
+      [10.3, 36.9],
+      [9.5, 36.3],
+      [7.0, 36.0],
+      [4.0, 35.9],
+      [1.0, 35.2],
+      [-1.0, 34.7]
+    ]
+  },
+
+  // Jebel Akhdar — Cyrenaica's forested highlands, Benghazi to Al Bayda,
+  // the one green patch on Libya's coast.
+  {
+    type: "forest",
+    ring: [
+      [20.0, 32.2],
+      [20.8, 32.7],
+      [21.8, 32.85],
+      [22.5, 32.6],
+      [22.2, 32.1],
+      [21.2, 31.9],
+      [20.3, 31.9]
+    ]
+  },
+
+  // Sinai Peninsula — between the Gulf of Suez and Gulf of Aqaba.
+  {
+    type: "desert",
+    ring: [
+      [32.4, 29.9],
+      [33.2, 31.1],
+      [34.3, 31.1],
+      [34.9, 29.5],
+      [34.6, 28.0],
+      [33.9, 27.85],
+      [33.2, 28.7],
+      [32.5, 29.5]
+    ]
+  },
+
+  // Nile Valley — the fertile ribbon from Aswan to Cairo, painted over
+  // the desert base above.
+  {
+    type: "plains",
+    ring: [
+      [32.7, 23.9],
+      [32.4, 25.6],
+      [31.6, 27.0],
+      [31.0, 28.5],
+      [30.9, 29.8],
+      [31.3, 29.9],
+      [31.5, 28.5],
+      [32.0, 27.0],
+      [32.8, 25.7],
+      [33.1, 24.0]
+    ]
+  },
+
+  // Nile Delta — Cairo out to the Mediterranean past Alexandria/Damietta.
+  {
+    type: "swamp",
+    ring: [
+      [30.9, 29.9],
+      [31.5, 29.9],
+      [31.2, 30.5],
+      [32.0, 30.9],
+      [32.35, 31.25],
+      [31.8, 31.55],
+      [31.0, 31.5],
+      [30.2, 31.3],
+      [29.85, 30.9],
+      [30.5, 30.3]
+    ]
+  },
+
+  // --- Arabian Peninsula & extended Middle East ---
+
+  // An Nafud & ad-Dahna — the northern sand-sea corridor curving from
+  // Nafud southeast toward the Empty Quarter.
+  {
+    type: "desert",
+    ring: [
+      [37.5, 29.0],
+      [40.0, 31.0],
+      [43.0, 31.0],
+      [45.5, 29.5],
+      [47.0, 27.0],
+      [46.5, 24.5],
+      [44.5, 23.5],
+      [42.0, 24.0],
+      [40.0, 25.5],
+      [38.0, 27.0]
+    ]
+  },
+
+  // Rub' al Khali — the Empty Quarter, the world's largest contiguous
+  // sand desert, southern Arabia.
+  {
+    type: "desert",
+    ring: [
+      [44.0, 22.0],
+      [47.0, 21.0],
+      [50.0, 20.0],
+      [53.0, 19.5],
+      [55.5, 20.5],
+      [55.0, 18.0],
+      [52.0, 16.5],
+      [48.5, 16.0],
+      [45.5, 17.0],
+      [43.5, 19.0]
+    ]
+  },
+
+  // Hejaz Mountains — the Red Sea coastal range from the Jordanian
+  // border down past Mecca/Medina.
+  {
+    type: "mountains",
+    ring: [
+      [35.1, 29.5],
+      [36.0, 28.5],
+      [37.0, 27.0],
+      [37.8, 25.0],
+      [38.3, 23.0],
+      [39.3, 21.5],
+      [40.0, 20.5],
+      [39.0, 20.3],
+      [37.8, 21.8],
+      [36.8, 23.5],
+      [36.0, 25.5],
+      [35.2, 27.5],
+      [34.7, 29.0]
+    ]
+  },
+
+  // Asir & Yemen Highlands — the southwestern escarpment, Abha down to
+  // Sanaa/Taiz.
+  {
+    type: "mountains",
+    ring: [
+      [42.0, 19.5],
+      [43.0, 18.5],
+      [43.8, 17.0],
+      [44.3, 15.5],
+      [44.5, 14.0],
+      [43.8, 13.2],
+      [43.0, 13.8],
+      [42.5, 15.0],
+      [42.0, 16.5],
+      [41.7, 18.0]
+    ]
+  },
+
+  // Najd Plateau — central Arabia around Riyadh/Buraydah/Hail, painted
+  // over the desert belt above.
+  {
+    type: "plains",
+    ring: [
+      [43.0, 27.0],
+      [45.5, 27.3],
+      [47.5, 26.0],
+      [48.0, 24.0],
+      [47.0, 22.0],
+      [45.0, 21.5],
+      [43.0, 22.5],
+      [42.0, 24.5],
+      [42.3, 26.0]
+    ]
+  },
+
+  // Al Hajar Mountains — northeastern Oman/UAE, up to the Musandam tip.
+  {
+    type: "mountains",
+    ring: [
+      [55.8, 25.4],
+      [56.5, 24.8],
+      [57.5, 23.8],
+      [58.5, 23.2],
+      [59.3, 22.5],
+      [58.8, 21.8],
+      [57.8, 22.5],
+      [56.8, 23.5],
+      [56.0, 24.5]
+    ]
+  },
+
+  // Persian Gulf coastal dunes — UAE/Qatar coast.
+  {
+    type: "sand",
+    ring: [
+      [50.5, 24.5],
+      [51.5, 25.5],
+      [53.0, 25.0],
+      [54.5, 24.8],
+      [55.8, 25.3],
+      [55.5, 24.2],
+      [53.5, 24.0],
+      [51.5, 24.2],
+      [50.3, 24.0]
+    ]
+  },
+
+  // Mesopotamian Plain — the Tigris-Euphrates lowlands from Baghdad down
+  // to Basra and the Gulf, continuing south from the Southeastern
+  // Anatolia plains above.
+  {
+    type: "plains",
+    ring: [
+      [42.5, 34.2],
+      [44.0, 34.5],
+      [45.5, 33.8],
+      [47.0, 32.0],
+      [48.0, 30.0],
+      [48.5, 29.3],
+      [47.0, 29.5],
+      [45.5, 31.0],
+      [44.0, 32.0],
+      [43.0, 33.0]
+    ]
+  },
+
+  // --- Eastern Mediterranean islands ---
+
+  // Cyprus — Troodos massif and the Kyrenia range.
+  {
+    type: "mountains",
+    ring: [
+      [32.3, 34.65],
+      [32.7, 34.95],
+      [33.0, 35.0],
+      [33.4, 35.0],
+      [33.9, 35.35],
+      [34.0, 35.7],
+      [33.5, 35.68],
+      [32.9, 35.4],
+      [32.4, 35.05]
+    ]
+  },
+
+  // Crete — the mountainous spine south of the Aegean.
+  {
+    type: "mountains",
+    ring: [
+      [23.5, 35.3],
+      [24.0, 35.55],
+      [25.0, 35.45],
+      [25.7, 35.3],
+      [26.3, 35.3],
+      [25.5, 35.15],
+      [24.5, 35.0],
+      [23.7, 35.1]
     ]
   }
 ];

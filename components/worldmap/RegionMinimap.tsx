@@ -1,11 +1,15 @@
 "use client";
 
 import { ChevronDown, ChevronUp, Maximize2 } from "lucide-react";
-import { visibleCanonicalBBox, type FocusTransform } from "@/lib/geo/focus";
+import { visibleCanonicalBBoxForContainer, type FocusTransform } from "@/lib/geo/focus";
 import { MAP_VIEWBOX_HEIGHT, MAP_VIEWBOX_WIDTH, WORLD_LAND_PATH } from "@/lib/geo/worldMapGeometry";
 
 interface RegionMinimapProps {
   transform: FocusTransform;
+  /** The main map <svg>'s live rendered size — see useElementSize's
+   * docstring — so the indicator rectangle matches what "slice" actually
+   * shows instead of the full (partially cropped-off) viewBox. */
+  containerSize: { width: number; height: number };
   onZoomIn: () => void;
   onZoomOut: () => void;
   onToggleFullscreen: () => void;
@@ -22,11 +26,18 @@ const PANEL_HEIGHT = PANEL_WIDTH * (MAP_VIEWBOX_HEIGHT / MAP_VIEWBOX_WIDTH);
  */
 export default function RegionMinimap({
   transform,
+  containerSize,
   onZoomIn,
   onZoomOut,
   onToggleFullscreen
 }: RegionMinimapProps) {
-  const view = visibleCanonicalBBox(transform, MAP_VIEWBOX_WIDTH, MAP_VIEWBOX_HEIGHT);
+  const view = visibleCanonicalBBoxForContainer(
+    transform,
+    MAP_VIEWBOX_WIDTH,
+    MAP_VIEWBOX_HEIGHT,
+    containerSize.width,
+    containerSize.height
+  );
   const iconClasses =
     "flex h-7 w-7 items-center justify-center border border-bone/15 bg-ink-900/80 text-bone-dim backdrop-blur-sm transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300";
 

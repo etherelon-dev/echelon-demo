@@ -308,5 +308,20 @@ export const RIVERS: RiverDefinition[] = [
       [-0.1, 51.5],
       [0.7, 51.5]
     ]
+  },
+  {
+    // Nile — from Lake Nasser near Aswan, north through Luxor and Cairo,
+    // out to the Mediterranean at Rosetta.
+    name: "nile",
+    points: [
+      [32.9, 24.0],
+      [32.6, 25.7],
+      [31.6, 27.2],
+      [31.0, 28.5],
+      [30.9, 29.8],
+      [31.2, 30.05],
+      [30.7, 30.8],
+      [30.4, 31.4]
+    ]
   }
 ];

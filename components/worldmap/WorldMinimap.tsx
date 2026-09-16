@@ -1,8 +1,12 @@
-import { visibleCanonicalBBox, type FocusTransform } from "@/lib/geo/focus";
+import { visibleCanonicalBBoxForContainer, type FocusTransform } from "@/lib/geo/focus";
 import { MAP_VIEWBOX_HEIGHT, MAP_VIEWBOX_WIDTH, WORLD_LAND_PATH } from "@/lib/geo/worldMapGeometry";
 
 interface WorldMinimapProps {
   transform: FocusTransform;
+  /** The main map <svg>'s live rendered size — see useElementSize's
+   * docstring — so the indicator rectangle matches what "slice" actually
+   * shows instead of the full (partially cropped-off) viewBox. */
+  containerSize: { width: number; height: number };
 }
 
 const DIAMETER = 88;
@@ -13,8 +17,14 @@ const INNER = DIAMETER - 20;
  * and canonical viewBox as the main map — just rendered at a smaller
  * physical size — so no separate projection or geometry is needed here.
  */
-export default function WorldMinimap({ transform }: WorldMinimapProps) {
-  const view = visibleCanonicalBBox(transform, MAP_VIEWBOX_WIDTH, MAP_VIEWBOX_HEIGHT);
+export default function WorldMinimap({ transform, containerSize }: WorldMinimapProps) {
+  const view = visibleCanonicalBBoxForContainer(
+    transform,
+    MAP_VIEWBOX_WIDTH,
+    MAP_VIEWBOX_HEIGHT,
+    containerSize.width,
+    containerSize.height
+  );
 
   return (
     <div

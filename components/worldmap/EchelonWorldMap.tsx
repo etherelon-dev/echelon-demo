@@ -8,6 +8,7 @@ import PhysicalGeographyLayer from "@/components/worldmap/PhysicalGeographyLayer
 import RegionMinimap from "@/components/worldmap/RegionMinimap";
 import RiverLayer from "@/components/worldmap/RiverLayer";
 import TerrainLayer from "@/components/worldmap/TerrainLayer";
+import { useElementSize } from "@/components/worldmap/useElementSize";
 import { useMapZoomPan } from "@/components/worldmap/useMapZoomPan";
 import WorldMinimap from "@/components/worldmap/WorldMinimap";
 import { INITIAL_FOCUS_TRANSFORM } from "@/lib/geo/focus";
@@ -32,6 +33,10 @@ export default function EchelonWorldMap() {
     MAP_VIEWBOX_HEIGHT,
     { minScale: 1, maxScale: 16, initialTransform: INITIAL_FOCUS_TRANSFORM }
   );
+  // The <svg>'s actual rendered box — needed so the minimaps' viewport
+  // indicator can account for what preserveAspectRatio="slice" crops off
+  // (see useElementSize's docstring).
+  const containerSize = useElementSize(svgRef);
 
   const toggleFullscreen = useCallback(() => {
     if (!containerRef.current) return;
@@ -44,13 +49,20 @@ export default function EchelonWorldMap() {
 
   return (
     <div ref={containerRef} className="relative h-full w-full select-none overflow-hidden bg-[#04050A]">
-      {/* "meet" (not "slice") so the container's aspect ratio never crops
-          part of the map away — worst case some letterboxing, which reads
-          as more of the dark background rather than losing geography. */}
+      {/* "slice" (not "meet") so the map always fills its panel edge to
+          edge. The active extent (Iceland to the Urals, Scandinavia to the
+          Syrian desert) is a very wide box — on a tall/narrow phone
+          viewport, "meet" had to shrink that whole wide box down to fit
+          the width, which left most of the panel below it as dead
+          letterboxed space. "slice" instead scales up to fill the panel
+          height and crops the excess width, centered — the initial camera
+          (INITIAL_FOCUS_TRANSFORM, below) already frames Turkey/Anatolia
+          within that box, and pan/zoom reaches everything the crop
+          trims. */}
       <svg
         ref={svgRef}
         viewBox={`0 0 ${MAP_VIEWBOX_WIDTH} ${MAP_VIEWBOX_HEIGHT}`}
-        preserveAspectRatio="xMidYMid meet"
+        preserveAspectRatio="xMidYMid slice"
         role="img"
         aria-label="Interactive geographic map of the Echelon world, initially centered on Turkey and the surrounding region"
         className="h-full w-full touch-none"
@@ -61,10 +73,6 @@ export default function EchelonWorldMap() {
             <stop offset="0%" stopColor="#060810" />
             <stop offset="100%" stopColor="#0A0D14" />
           </linearGradient>
-          <radialGradient id="echelon-map-vignette" cx="50%" cy="45%" r="75%">
-            <stop offset="55%" stopColor="#000000" stopOpacity={0} />
-            <stop offset="100%" stopColor="#000000" stopOpacity={0.6} />
-          </radialGradient>
           <clipPath id="echelon-land-clip">
             <path d={WORLD_LAND_PATH} fillRule="evenodd" />
           </clipPath>
@@ -83,15 +91,6 @@ export default function EchelonWorldMap() {
           {/* 6. Coastline */}
           <PhysicalGeographyLayer />
         </g>
-
-        <rect
-          x={0}
-          y={0}
-          width={MAP_VIEWBOX_WIDTH}
-          height={MAP_VIEWBOX_HEIGHT}
-          fill="url(#echelon-map-vignette)"
-          className="pointer-events-none"
-        />
       </svg>
 
       <MapHud onToggleFullscreen={toggleFullscreen} />
@@ -102,9 +101,10 @@ export default function EchelonWorldMap() {
         onToggleLayers={() => setShowTerrainColors((v) => !v)}
         layersActive={showTerrainColors}
       />
-      <WorldMinimap transform={transform} />
+      <WorldMinimap transform={transform} containerSize={containerSize} />
       <RegionMinimap
         transform={transform}
+        containerSize={containerSize}
         onZoomIn={zoomIn}
         onZoomOut={zoomOut}
         onToggleFullscreen={toggleFullscreen}
