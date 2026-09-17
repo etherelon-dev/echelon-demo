@@ -1,7 +1,8 @@
 node_modules
 .next
 out
-.env
-.env.local
+dist
+*.local
+.env*.local
 .DS_Store
-next-env.d.ts
+coverage
