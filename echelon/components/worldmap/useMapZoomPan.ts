@@ -18,8 +18,10 @@ interface Options {
 const IDENTITY: Transform = { scale: 1, x: 0, y: 0 };
 
 /**
- * Map navigation only — zoom, pan, reset. No territory selection or
- * click-to-interact here; that belongs to a later gameplay layer.
+ * Map navigation only — zoom, pan, reset, and programmatic pan-to-point
+ * (panTo, for "jump to this territory" style interactions). No territory
+ * selection or click-to-interact here; that belongs to a later gameplay
+ * layer.
  *
  * The transform is applied to an inner <g> as:
  *   translate(x, y) translate(cx, cy) scale(scale) translate(-cx, -cy)
@@ -104,6 +106,24 @@ export function useMapZoomPan(
   );
 
   const reset = useCallback(() => setTransform(initialTransform), [initialTransform]);
+
+  /** Centers the given canonical-space point on screen at `scale` (defaults
+   * to the current scale — i.e. pan without also zooming). Used by
+   * search-to-select and similar "jump to this place" interactions; plain
+   * pan/zoom/pinch above never call this themselves. */
+  const panTo = useCallback(
+    (worldX: number, worldY: number, scale?: number) => {
+      setTransform((prev) => {
+        const nextScale = scale ?? prev.scale;
+        return clamp({
+          scale: nextScale,
+          x: (cx - worldX) * nextScale,
+          y: (cy - worldY) * nextScale
+        });
+      });
+    },
+    [cx, cy, clamp]
+  );
 
   const onWheel = useCallback(
     (e: React.WheelEvent<SVGSVGElement>) => {
@@ -196,6 +216,7 @@ export function useMapZoomPan(
     zoomIn: () => zoomByFactor(1.5),
     zoomOut: () => zoomByFactor(1 / 1.5),
     reset,
+    panTo,
     minScale,
     maxScale
   };

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Space_Grotesk, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -14,6 +14,16 @@ const body = Inter({
   variable: "--font-body"
 });
 
+// Elegant serif for map geographic labels (seas, oceans, mountain summits)
+// — a distinct typographic register from the UI's own display/body sans,
+// matching the reference's italic geographic type.
+const mapLabel = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["italic"],
+  variable: "--font-map-label"
+});
+
 export const metadata: Metadata = {
   title: "Echelon — Build. Rule. Shape History.",
   description:
@@ -26,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mapLabel.variable}`}>
       <body className="bg-ink-900 font-body text-bone antialiased">
         {children}
       </body>

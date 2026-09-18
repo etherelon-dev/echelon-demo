@@ -45,12 +45,24 @@ export function equirectangularRaw(lonDeg: number, latDeg: number): [number, num
   return [lonDeg, latDeg];
 }
 
+/** Inverse of `equirectangularRaw` — it's its own inverse, since the raw
+ * projection does no warping at all (x = lon, y = lat either direction). */
+export function equirectangularRawInvert(x: number, y: number): [number, number] {
+  return [x, y];
+}
+
 export interface Projector {
   project: (lonDeg: number, latDeg: number) => [number, number];
+  /** Inverse of `project` — canonical viewBox coordinates back to lon/lat
+   * degrees. Exact (not approximated) for every raw projection currently
+   * used here, since `fitBoundsToViewport` only ever applies a uniform
+   * scale + translate on top of `rawProject`. */
+  invert: (x: number, y: number) => [number, number];
   scale: number;
 }
 
 type RawProject = (lonDeg: number, latDeg: number) => [number, number];
+type RawInvert = (x: number, y: number) => [number, number];
 
 interface RawBounds {
   minX: number;
@@ -62,13 +74,20 @@ interface RawBounds {
 /** Shared tail: given raw-projection-space bounds, builds the actual
  * Projector — uniform scale (never independently scaled per axis, so this
  * can never stretch/squash geographic proportions), centered, with
- * optional padding. Used by both fitting strategies below. */
+ * optional padding. Used by both fitting strategies below.
+ *
+ * `rawInvert` defaults to the identity function, which is only exact for
+ * `equirectangularRaw` (the only raw projection the active map actually
+ * uses — see worldMapGeometry.ts). Callers fitting a non-identity raw
+ * projection (e.g. the unused `equalEarthRaw`) should pass its true
+ * inverse if they need `invert` to be meaningful. */
 function fitBoundsToViewport(
   bounds: RawBounds,
   rawProject: RawProject,
   width: number,
   height: number,
-  padding: number
+  padding: number,
+  rawInvert: RawInvert = equirectangularRawInvert
 ): Projector {
   const dataWidth = bounds.maxX - bounds.minX;
   const dataHeight = bounds.maxY - bounds.minY;
@@ -86,7 +105,13 @@ function fitBoundsToViewport(
     return [x * scale + translateX, -y * scale + translateY];
   };
 
-  return { project, scale };
+  const invert = (x: number, y: number): [number, number] => {
+    const rawX = (x - translateX) / scale;
+    const rawY = -(y - translateY) / scale;
+    return rawInvert(rawX, rawY);
+  };
+
+  return { project, invert, scale };
 }
 
 /**
