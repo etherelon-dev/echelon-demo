@@ -6,11 +6,40 @@ import { clampView, fitBox, moveAnchor, type View } from "@/lib/map/viewport";
 
 const COLORS = {
   sea: "#090d12",
-  land: "#1c242d",
-  france: "#28323d",
-  border: "#3f4c58",
-  coast: "#71818f"
+  land: "#212b35",
+  coast: "#71818f",
+  cityArea: "rgba(208, 173, 121, 0.3)",
+  cityEdge: "#d0ad79",
+  marker: "#d0ad79",
+  markerEdge: "#08080a",
+  label: "#eceae5",
+  labelHalo: "#090d12"
 };
+
+/** Half-diagonal, in screen pixels, of the diamond marker for each city tier. */
+const MARKER_HALF = [8, 7, 6, 5] as const;
+
+/** Diamonds, not dots: a square turned 45 degrees. */
+const MARKER_PATH = MARKER_HALF.map((h) => `M0 ${-h}L${h} 0L0 ${h}L${-h} 0Z`);
+
+/**
+ * Zoom bands, in screen pixels per kilometre. They decide which city labels
+ * are readable and when the built-up areas become large enough to show.
+ */
+function zoomLevel(k: number): 0 | 1 | 2 | 3 {
+  if (k < 0.5) return 0;
+  if (k < 1.2) return 1;
+  if (k < 3) return 2;
+  return 3;
+}
+
+const MAP_CSS = `
+.echelon-world:not([data-level="2"]):not([data-level="3"]) .echelon-areas{display:none}
+.echelon-world[data-level="0"] .echelon-label:not([data-tier="0"]){display:none}
+.echelon-world[data-level="1"] .echelon-label[data-tier="2"],
+.echelon-world[data-level="1"] .echelon-label[data-tier="3"]{display:none}
+.echelon-world[data-level="2"] .echelon-label[data-tier="3"]{display:none}
+`;
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -47,6 +76,10 @@ export default function FlatMap() {
         "transform",
         `translate(${view.tx} ${view.ty}) scale(${view.k})`
       );
+      // city markers and labels cancel the zoom so they keep a constant pixel size
+      world.style.setProperty("--inv", String(1 / view.k));
+      const level = String(zoomLevel(view.k));
+      if (world.dataset.level !== level) world.dataset.level = level;
     };
 
     const commit = (next: View) => {
@@ -65,7 +98,7 @@ export default function FlatMap() {
       if (rect.width === 0 || rect.height === 0) return;
 
       if (size.w === 0) {
-        // first layout: frame France, the Mediterranean and a strip of North Africa
+        // first layout: frame the whole of Europe
         size = { w: rect.width, h: rect.height };
         view = clampView(fitBox(defaultView, size.w, size.h), extent, size.w, size.h);
         setReady(true);
@@ -185,24 +218,26 @@ export default function FlatMap() {
       className="absolute inset-0 cursor-grab touch-none select-none overflow-hidden active:cursor-grabbing"
       style={{ backgroundColor: COLORS.sea }}
     >
+      <style>{MAP_CSS}</style>
       <svg
         className="block h-full w-full"
         style={{ opacity: ready ? 1 : 0 }}
         role="img"
-        aria-label="Flat map of France, the Mediterranean Sea and the coast of North Africa"
+        aria-label="Flat map of Europe with the cities and built-up areas of the year 1800"
       >
         <g
           ref={worldRef}
+          className="echelon-world"
           fill="none"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          strokeLinecap="butt"
+          strokeLinejoin="bevel"
         >
-          <path d={mapPaths.land} fill={COLORS.land} fillRule="evenodd" />
-          <path d={mapPaths.main} fill={COLORS.france} fillRule="evenodd" />
           <path
-            d={mapPaths.borders}
-            stroke={COLORS.border}
-            strokeWidth={0.8}
+            d={mapPaths.land}
+            fill={COLORS.land}
+            fillRule="evenodd"
+            stroke={COLORS.land}
+            strokeWidth={1}
             vectorEffect="non-scaling-stroke"
           />
           <path
@@ -211,6 +246,45 @@ export default function FlatMap() {
             strokeWidth={1}
             vectorEffect="non-scaling-stroke"
           />
+          <path
+            className="echelon-areas"
+            d={mapPaths.cityAreas}
+            fill={COLORS.cityArea}
+            stroke={COLORS.cityEdge}
+            strokeWidth={1}
+            vectorEffect="non-scaling-stroke"
+          />
+          {mapPaths.cities.map((city) => (
+            <g
+              key={city.name}
+              style={{
+                transform: `translate(${city.x}px, ${city.y}px) scale(var(--inv, 1))`
+              }}
+            >
+              <title>{`${city.name} (c. 1800, about ${city.pop},000 inhabitants)`}</title>
+              <path
+                d={MARKER_PATH[city.tier]}
+                fill={COLORS.marker}
+                stroke={COLORS.markerEdge}
+                strokeWidth={1}
+              />
+              <text
+                className="echelon-label"
+                data-tier={city.tier}
+                x={MARKER_HALF[city.tier] + 5}
+                y={4}
+                fill={COLORS.label}
+                stroke={COLORS.labelHalo}
+                strokeWidth={3}
+                paintOrder="stroke"
+                fontSize={11}
+                fontWeight={500}
+                style={{ fontFamily: "var(--font-body), system-ui, sans-serif" }}
+              >
+                {city.name}
+              </text>
+            </g>
+          ))}
         </g>
       </svg>
     </div>

@@ -4,7 +4,7 @@ import FlatMap from "@/components/demo/FlatMap";
 
 export const metadata: Metadata = {
   title: "Demo — Echelon",
-  description: "A flat map of France, the Mediterranean and North Africa."
+  description: "A flat map of Europe with its cities as they stood in 1800."
 };
 
 export default function DemoPage() {

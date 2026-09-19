@@ -11,12 +11,12 @@ import type { Box } from "./mapData";
 export type View = { k: number; tx: number; ty: number };
 
 /**
- * Deepest zoom, in pixels per kilometre. At 1.2, France fills a desktop screen.
- * The bundled 110m dataset has one point roughly every 20 km, so going much
- * deeper only makes the coastline look angular. Raise this after swapping in
- * the 50m dataset (see scripts/map/convert.py).
+ * Deepest zoom, in pixels per kilometre. At 30, a city of a few kilometres
+ * fills the screen, which is what the c. 1800 city outlines need. The bundled
+ * 110m coastline has one point roughly every 20 km, so coasts look angular this
+ * close. Swap in the 50m dataset for finer coasts (see scripts/map/convert.py).
  */
-export const MAX_SCALE = 1.2;
+export const MAX_SCALE = 30;
 
 /** Smallest scale at which the extent still covers the whole viewport. */
 export function minScale(extent: Box, vw: number, vh: number): number {

@@ -2,7 +2,7 @@
  * Flat map projection: longitude/latitude -> planar X/Y.
  *
  * Lambert Conformal Conic — the standard choice for mid-latitude regions such
- * as France and the Mediterranean. Nothing here is spherical or 3D: it is a
+ * as Europe. Nothing here is spherical or 3D: it is a
  * pure function from (lon, lat) to a point on a flat sheet.
  *
  * Output units are kilometres from the projection origin, with +y pointing
