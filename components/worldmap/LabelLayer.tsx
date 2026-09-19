@@ -6,6 +6,7 @@ import type { Kingdom, KingdomId, TerritoryId, TerritoryState } from "@/lib/game
 import { RESOURCE_LABELS } from "@/lib/game/types";
 import { PROJECTED_PEAKS, PROJECTED_WATER_LABELS } from "@/lib/geo/terrainGeometry";
 import { TERRITORIES } from "@/lib/geo/territoryGeometry";
+import SettlementMarker from "@/components/worldmap/SettlementMarker";
 
 interface LabelLayerProps {
   zoomScale: number;
@@ -147,16 +148,14 @@ export default function LabelLayer({
             zoomScale={zoomScale}
             opacity={Math.max(dotOpacity, nameOpacity)}
           >
-            <circle
-              r={isMajor ? 2.6 : 1.8}
-              fill={kingdom ? kingdom.color : "#D0AD79"}
-              stroke="#0A0D14"
-              strokeWidth={0.6}
-              style={{ opacity: dotOpacity }}
+            <SettlementMarker
+              tier={isMajor ? "major" : "minor"}
+              accentColor={kingdom ? kingdom.color : null}
+              opacity={dotOpacity}
             />
             <text
               x={0}
-              y={-5}
+              y={isMajor ? -12.5 : -6.5}
               textAnchor="middle"
               className="font-display uppercase"
               fontSize={5.5}
