@@ -49,11 +49,8 @@ const MOUNTAIN_TYPES = new Set<TerrainTypeId>(["mountains"]);
  * WORLD_LAND_PATH used for fills — see coastlineStroke.ts for why that
  * matters (the raw fill path can contain synthetic bbox-clip seams that
  * are invisible when filled but show up as a stray line when stroked).
- * The only filter used here is a single plain feGaussianBlur, applied to a
- * couple dozen small elements — the kind of filter chain that reliably
- * renders the same way everywhere, unlike the feTurbulence/
- * feDiffuseLighting "shaded relief" attempt the README describes
- * abandoning.
+ * No SVG filters are used here at all (the old feGaussianBlur on the
+ * coastline was removed for rendering performance).
  */
 export default function TerrainLayer({ showClassification, zoomScale }: TerrainLayerProps) {
   const textureOpacity = Math.max(0, Math.min(1, (zoomScale - 3) / 3.5));
@@ -102,10 +99,6 @@ export default function TerrainLayer({ showClassification, zoomScale }: TerrainL
           <stop offset="100%" stopColor="#F4F6F8" stopOpacity="0" />
         </radialGradient>
 
-        <filter id="terrain-soft-blur" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation={MAP_VIEWBOX_WIDTH / 650} />
-        </filter>
-
         {/* One consistent light-from-upper-left -> shadow-to-lower-right
             direction across the *whole* map, in fixed canonical
             coordinates (userSpaceOnUse) rather than per-shape bounding-box
@@ -127,7 +120,8 @@ export default function TerrainLayer({ showClassification, zoomScale }: TerrainL
 
       {/* Coastal shallow-water shelf — drawn before the land fill so only
           its outward (water-side) half remains visible once land covers
-          the rest. A single blurred wide stroke along the real coastline. */}
+          the rest. A single plain wide stroke along the real coastline (no blur
+          filter — too heavy to re-render while panning/zooming). */}
       <path
         d={WORLD_COASTLINE_STROKE_PATH}
         fill="none"
@@ -135,7 +129,6 @@ export default function TerrainLayer({ showClassification, zoomScale }: TerrainL
         strokeOpacity={0.28}
         strokeWidth={MAP_VIEWBOX_WIDTH / 110}
         strokeLinecap="round"
-        filter="url(#terrain-soft-blur)"
       />
 
       <g clipPath="url(#echelon-land-clip)">

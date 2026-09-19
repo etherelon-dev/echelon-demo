@@ -57,8 +57,9 @@ interface PoliticalLayerProps {
  * CONTROLS IT" both visible at once, per the brief), or a muted neutral
  * tone if it's unclaimed — unless `colorMode` is "economy", in which case
  * every territory is tinted by its economic-power tier instead. The
- * selected territory gets a brighter fill, a heavier border, and a soft
- * outer glow; annexable neighbors of the selected territory's kingdom get
+ * selected territory gets a brighter fill and a heavier border (no blur/glow
+ * filter — too expensive to re-render on every pan/zoom); annexable
+ * neighbors of the selected territory's kingdom get
  * a dashed invitation border. Clicking a territory calls
  * `onSelectTerritory` — actual drag-vs-tap disambiguation happens one
  * level up in EchelonWorldMap, since only it knows whether the current
@@ -81,16 +82,6 @@ export default function PoliticalLayer({
 
   return (
     <g clipPath="url(#echelon-land-clip)">
-      <defs>
-        <filter id="political-select-glow" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation={MAP_VIEWBOX_WIDTH / 260} result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
       <g style={{ opacity }}>
         {TERRITORIES.map((territory, index) => {
           const state = territories[index];
@@ -124,7 +115,6 @@ export default function PoliticalLayer({
               strokeWidth={(isSelected ? borderWidth * 2.5 : borderWidth) * strokeWidthMultiplier}
               strokeDasharray={isAnnexable ? `${borderWidth * 3} ${borderWidth * 2}` : undefined}
               vectorEffect="non-scaling-stroke"
-              filter={isSelected ? "url(#political-select-glow)" : undefined}
               className="cursor-pointer transition-[fill-opacity] duration-150"
               onClick={() => onSelectTerritory(index)}
             />

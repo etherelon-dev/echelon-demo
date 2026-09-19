@@ -39,7 +39,7 @@ export default function WorldMinimap({ transform, containerSize }: WorldMinimapP
 
   return (
     <div
-      className="absolute bottom-4 left-4 z-10 hidden items-center justify-center overflow-hidden rounded-full border border-gold-500/25 bg-ink-900/85 backdrop-blur-sm sm:flex"
+      className="absolute bottom-4 left-4 z-10 hidden items-center justify-center overflow-hidden rounded-full border border-gold-500/25 bg-ink-900/85 sm:flex"
       style={{ width: DIAMETER, height: DIAMETER }}
     >
       <svg

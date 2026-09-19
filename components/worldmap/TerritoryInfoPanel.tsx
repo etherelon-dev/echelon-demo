@@ -66,7 +66,7 @@ export default function TerritoryInfoPanel({
 
   return (
     <div
-      className="absolute inset-x-0 bottom-0 z-20 max-h-[85%] overflow-y-auto rounded-t-lg border-t border-gold-500/25 bg-ink-900/95 p-4 backdrop-blur-md sm:inset-y-0 sm:bottom-auto sm:right-0 sm:left-auto sm:h-full sm:w-80 sm:max-h-none sm:rounded-none sm:rounded-l-lg sm:border-t-0 sm:border-l"
+      className="absolute inset-x-0 bottom-0 z-20 max-h-[85%] overflow-y-auto rounded-t-lg border-t border-gold-500/25 bg-ink-900/95 p-4 sm:inset-y-0 sm:bottom-auto sm:right-0 sm:left-auto sm:h-full sm:w-80 sm:max-h-none sm:rounded-none sm:rounded-l-lg sm:border-t-0 sm:border-l"
       role="dialog"
       aria-label={`${territory.name} territory details`}
     >

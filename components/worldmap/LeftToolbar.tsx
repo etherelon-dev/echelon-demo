@@ -38,7 +38,7 @@ export default function LeftToolbar({ mode, onChange }: LeftToolbarProps) {
           aria-pressed={mode === id}
           title={label}
           onClick={() => onChange(id)}
-          className={`flex h-9 w-9 items-center justify-center border border-bone/15 bg-ink-900/80 backdrop-blur-sm transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300 ${
+          className={`flex h-9 w-9 items-center justify-center border border-bone/15 bg-ink-900/80 transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300 ${
             mode === id ? "bg-gold-500/15 text-gold-300" : "text-bone-dim"
           }`}
         >

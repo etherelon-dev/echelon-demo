@@ -83,7 +83,7 @@ export default function MapHud({
 
   return (
     <div className="absolute inset-x-0 top-0 z-30">
-      <div className="flex h-12 items-center justify-between border-b border-gold-500/20 bg-ink-900/70 px-4 backdrop-blur-sm sm:h-14 sm:px-6">
+      <div className="flex h-12 items-center justify-between border-b border-gold-500/20 bg-ink-900/70 px-4 sm:h-14 sm:px-6">
         <a href="/" className="flex items-center gap-2.5">
           <CompassMark size={20} />
           <span className="font-display text-sm font-semibold tracking-[0.28em] text-bone sm:text-base">
@@ -165,7 +165,7 @@ export default function MapHud({
       </div>
 
       {layersMenuOpen && (
-        <div className="mx-4 mt-1.5 rounded-sm border border-bone/10 bg-ink-900/95 p-1 backdrop-blur-md sm:absolute sm:right-6 sm:mx-0 sm:w-40">
+        <div className="mx-4 mt-1.5 rounded-sm border border-bone/10 bg-ink-900/95 p-1 sm:absolute sm:right-6 sm:mx-0 sm:w-40">
           {MODES.map((m) => (
             <button
               key={m.id}
@@ -185,7 +185,7 @@ export default function MapHud({
       )}
 
       {searchOpen && (
-        <div className="mx-4 mt-1.5 rounded-sm border border-bone/10 bg-ink-900/95 p-2 backdrop-blur-md sm:absolute sm:right-6 sm:mx-0 sm:w-56">
+        <div className="mx-4 mt-1.5 rounded-sm border border-bone/10 bg-ink-900/95 p-2 sm:absolute sm:right-6 sm:mx-0 sm:w-56">
           <input
             autoFocus
             type="text"

@@ -25,7 +25,7 @@ export default function HistoryPanel({ open, onClose, kingdoms, history }: Histo
   const events = history.slice().reverse();
 
   return (
-    <div className="absolute inset-x-0 top-12 z-20 mx-auto max-h-[80%] w-[min(92vw,26rem)] overflow-y-auto rounded-b-lg border border-t-0 border-gold-500/25 bg-ink-900/95 p-4 backdrop-blur-md sm:top-14">
+    <div className="absolute inset-x-0 top-12 z-20 mx-auto max-h-[80%] w-[min(92vw,26rem)] overflow-y-auto rounded-b-lg border border-t-0 border-gold-500/25 bg-ink-900/95 p-4 sm:top-14">
       <div className="flex items-center justify-between">
         <h2 className="font-display text-sm font-semibold uppercase tracking-[0.16em] text-bone">
           Regions &amp; History

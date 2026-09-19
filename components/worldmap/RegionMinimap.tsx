@@ -39,12 +39,12 @@ export default function RegionMinimap({
     containerSize.height
   );
   const iconClasses =
-    "flex h-7 w-7 items-center justify-center border border-bone/15 bg-ink-900/80 text-bone-dim backdrop-blur-sm transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300";
+    "flex h-7 w-7 items-center justify-center border border-bone/15 bg-ink-900/80 text-bone-dim transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300";
 
   return (
     <div className="absolute bottom-4 right-4 z-10 hidden items-stretch gap-1.5 sm:flex sm:bottom-6 sm:right-6">
       <div
-        className="overflow-hidden rounded-sm border border-gold-500/25 bg-ink-900/85 p-1.5 backdrop-blur-sm"
+        className="overflow-hidden rounded-sm border border-gold-500/25 bg-ink-900/85 p-1.5"
         style={{ width: PANEL_WIDTH }}
       >
         <svg

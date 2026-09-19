@@ -18,7 +18,7 @@ export default function MapControls({
   layersActive
 }: MapControlsProps) {
   const buttonClasses =
-    "flex h-9 w-9 items-center justify-center border border-bone/15 bg-ink-900/80 text-bone-dim backdrop-blur-sm transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300";
+    "flex h-9 w-9 items-center justify-center border border-bone/15 bg-ink-900/80 text-bone-dim transition-colors duration-200 hover:border-gold-500/40 hover:text-gold-300";
 
   return (
     <div className="absolute left-4 top-16 z-10 flex flex-col gap-px overflow-hidden rounded-sm border border-bone/10 sm:left-6 sm:top-20">
