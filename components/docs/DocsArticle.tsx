@@ -262,7 +262,7 @@ function Block({ block }: { block: DocBlock }) {
             <p>Shape History.</p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
-            <Button variant="primary" comingSoon>
+            <Button variant="primary" href="/demo">
               Try Demo
             </Button>
             <Button variant="secondary">Join Waitlist</Button>

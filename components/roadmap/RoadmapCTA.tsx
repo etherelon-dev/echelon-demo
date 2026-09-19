@@ -34,7 +34,7 @@ export default function RoadmapCTA() {
               <Button variant="primary" href="/community">
                 Join the Community
               </Button>
-              <Button variant="secondary" comingSoon>
+              <Button variant="secondary" href="/demo">
                 Try the Demo
               </Button>
             </div>

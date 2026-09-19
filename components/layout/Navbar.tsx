@@ -65,7 +65,7 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="secondary" comingSoon>
+          <Button variant="secondary" href="/demo">
             Try Demo
           </Button>
           <Button variant="primary">Join Waitlist</Button>

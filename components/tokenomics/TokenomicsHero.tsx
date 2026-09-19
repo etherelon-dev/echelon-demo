@@ -30,7 +30,7 @@ export default function TokenomicsHero() {
                 Read the Docs
               </Button>
               <Button variant="secondary">Join Waitlist</Button>
-              <Button variant="ghost" comingSoon>
+              <Button variant="ghost" href="/demo">
                 Try Demo
               </Button>
             </div>

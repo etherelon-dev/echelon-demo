@@ -20,7 +20,7 @@ export default function FinalCTA() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-5 pt-4">
-              <Button variant="primary" comingSoon>
+              <Button variant="primary" href="/demo">
                 Try Demo
               </Button>
               <Button variant="secondary">Join Waitlist</Button>

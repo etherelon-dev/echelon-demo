@@ -36,7 +36,7 @@ export default function MobileMenu({ links, onClose }: MobileMenuProps) {
         ))}
       </nav>
       <div className="mt-auto flex flex-col gap-4 pt-10">
-        <Button variant="secondary" comingSoon className="w-full">
+        <Button variant="secondary" href="/demo" className="w-full">
           Try Demo
         </Button>
         <Button variant="primary" className="w-full">

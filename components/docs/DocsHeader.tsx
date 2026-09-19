@@ -63,7 +63,7 @@ export default function DocsHeader({
         </div>
 
         <div className="flex items-center gap-3">
-          <Button variant="secondary" comingSoon className="hidden md:inline-flex">
+          <Button variant="secondary" href="/demo" className="hidden md:inline-flex">
             Try Demo
           </Button>
 

@@ -30,7 +30,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-wrap items-center gap-5 pt-2">
-            <Button variant="primary" comingSoon>
+            <Button variant="primary" href="/demo">
               Try Demo
             </Button>
             <Button variant="secondary">Join Waitlist</Button>
